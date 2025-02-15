@@ -1,5 +1,4 @@
 import admin from "../config/firebase.js";
-import jwt from "jsonwebtoken";
 import pool from "../db/db.js";
 
 const authenticateFirebaseUser = async (req, res, next) => {
