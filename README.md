@@ -130,15 +130,3 @@ Middleware to verify JWT token.
 1. Extracts and verifies JWT token using `process.env.JWT_SECRET`.
 2. Attaches decoded user data to `req.user`.
 3. Proceeds to the next middleware or returns 403 if invalid.
-
-## Security Measures
-- Firebase authentication secures login.
-- JWT tokens protect all API routes.
-- Database queries are optimized to minimize unnecessary calls.
-- Admin authentication is separate from user authentication.
-
-## Future Enhancements
-- Add an admin dashboard for managing slots.
-- Implement notifications for slot bookings and cancellations.
-- Allow users to reschedule bookings.
-
