@@ -33,6 +33,7 @@ const authenticateFirebaseUser = async (req, res, next) => {
         req.user = {
             name: name,
             email: email,
+            googleId: decodedToken.uid,
             day: userSlotResult.rows[0].day,
         };
 
