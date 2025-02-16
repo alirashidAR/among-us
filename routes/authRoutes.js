@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post("/", authenticateFirebaseUser, async (req, res) => {
     try {
-        const jwtToken = jwt.sign(req.user, process.env.JWT_SECRET, { expiresIn: "2h" });
+        
         
         const client = await pool.connect();
 
@@ -30,6 +30,10 @@ router.post("/", authenticateFirebaseUser, async (req, res) => {
         );
 
         client.release();
+
+        req.user.id = updatedUserResult.rows[0].id;
+        const jwtToken = jwt.sign(req.user, process.env.JWT_SECRET, { expiresIn: "2h" });
+
         res.json({
             success: true,
             token: jwtToken,
