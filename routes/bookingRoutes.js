@@ -98,7 +98,7 @@ router.get("/", verifyJWT, async (req, res) => {
     try {
         const client = await pool.connect();
         const result = await client.query(
-            `SELECT b.*, s.vacancies 
+            `SELECT b.*, s.day,s.timing 
              FROM bookings b 
              JOIN slots s ON b.slot_id = s.id 
              WHERE b.user_id = $1`,
@@ -119,5 +119,6 @@ router.get("/", verifyJWT, async (req, res) => {
         return res.status(500).json({ error: "Internal server error" });
     }
 });
+
 
 export default router;
