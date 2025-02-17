@@ -13,11 +13,12 @@ router.get("/:day", verifyJWT, async (req, res) => {
     
     try {
         const day = req.params.day;
+        const newDay = "Day "+day;
         const client = await pool.connect();
 
         const result = await client.query(
             "SELECT * FROM slots WHERE day = $1",
-            [day]
+            [newDay]
         );
 
         client.release();

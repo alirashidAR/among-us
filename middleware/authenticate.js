@@ -34,7 +34,6 @@ const authenticateFirebaseUser = async (req, res, next) => {
             name: name,
             email: email,
             googleId: decodedToken.uid,
-            day: userSlotResult.rows[0].day,
         };
 
         next(); // Move to the next middleware or route handler
