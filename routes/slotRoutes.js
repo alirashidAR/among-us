@@ -9,9 +9,10 @@ const router = express.Router();
  * @desc    Book a slot
  * @access  Private (JWT Verified Users)
  */
-router.get("/", verifyJWT, async (req, res) => {
-    const day = req.user.day;
+router.get("/:day", verifyJWT, async (req, res) => {
+    
     try {
+        const day = req.params.day;
         const client = await pool.connect();
 
         const result = await client.query(
