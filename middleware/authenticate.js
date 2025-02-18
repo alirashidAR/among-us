@@ -19,7 +19,7 @@ const authenticateFirebaseUser = async (req, res, next) => {
 
         // Check if user has access in `user_slots`
         const userSlotResult = await client.query(
-            "SELECT day FROM user_slots WHERE email = $1",
+            "SELECT email FROM user_slots WHERE email = $1",
             [email]
         );
 
