@@ -31,4 +31,25 @@ router.get("/:day", verifyJWT, async (req, res) => {
     }
 });
 
+router.get("/slot/:id", verifyJWT, async (req, res) => {
+    
+    try {
+        const id = req.params.id;
+        const client = await pool.connect();
+
+        const result = await client.query(
+            "SELECT * FROM slots WHERE id = $1",
+            [id]
+        );
+
+        client.release();
+
+        return res.status(200).json(result.rows);
+
+    } catch (err) {
+        console.error("Error fetching slots:", err);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 export default router;
