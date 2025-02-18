@@ -32,7 +32,7 @@ router.post("/", authenticateFirebaseUser, async (req, res) => {
         client.release();
 
         req.user.id = updatedUserResult.rows[0].id;
-        const jwtToken = jwt.sign(req.user, process.env.JWT_SECRET, { expiresIn: "2h" });
+        const jwtToken = jwt.sign(req.user, process.env.JWT_SECRET, { expiresIn: "2d" });
 
         res.json({
             success: true,

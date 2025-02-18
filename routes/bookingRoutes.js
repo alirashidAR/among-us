@@ -107,7 +107,7 @@ router.get("/", verifyJWT, async (req, res) => {
         client.release();
 
         if (result.rows.length === 0) {
-            return res.status(200).json({ 
+            return res.status(204).json({ 
                 message: "You haven't booked any slots yet" 
             });
         }
