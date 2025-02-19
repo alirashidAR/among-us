@@ -64,7 +64,7 @@ router.get("/showRoles", verifyJWT, async (req, res) => {
            FROM gameroom
            WHERE roles = 'Imposter'`
       );
-      if (impost.rows)
+      if (impost.rows.length > 0)
         return res.json({
           message: "You are an Imposter",
           imposters: impost.rows,
