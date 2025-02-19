@@ -64,7 +64,12 @@ router.get("/showRoles", verifyJWT, async (req, res) => {
            FROM gameroom
            WHERE roles = 'Imposter'`
       );
-      res.json({ message: "You are an Imposter", imposters: impost.rows });
+      if (impost.rows)
+        return res.json({
+          message: "You are an Imposter",
+          imposters: impost.rows,
+        });
+      else return res.status(404).json({ error: "Roles not alloted yet " });
     }
   } catch (err) {
     console.error("Error fetching booking:", err);
