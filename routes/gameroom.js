@@ -53,9 +53,9 @@ router.get("/showRoles", verifyJWT, async (req, res) => {
     );
 
     if (!result.rows[0]) {
-      return res.status(400).json({ error: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
-    
+
     if (result.rows[0].roles === "Crewmate") {
       return res.status(200).json({ message: "You are a Crewmate" });
     } else {
