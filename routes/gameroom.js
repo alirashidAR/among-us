@@ -8,7 +8,7 @@ router.patch("/", async (req, res) => {
     const client = await pool.connect();
     const result = await client.query("SELECT number FROM gameroom");
     const user = result.rows;
-    
+
     const imposterIndex = [];
     for (let i = 0; i < Math.floor(user.length / 5); i++) {
       let index = Math.floor(Math.random() * user.length);
@@ -18,7 +18,6 @@ router.patch("/", async (req, res) => {
       imposterIndex.push(index);
     }
 
-    
     const role = [];
     for (let i = 0; i < user.length; i++) {
       if (imposterIndex.includes(i)) {
@@ -27,11 +26,11 @@ router.patch("/", async (req, res) => {
         role.push("Crewmate");
       }
     }
-   
+
     for (let i = 0; i < user.length; i++) {
       await client.query("UPDATE gameroom SET roles = $1 WHERE number = $2", [
         role[i],
-        i+1,
+        i + 1,
       ]);
     }
     res.status(200).send("Roles Alloted");
@@ -41,38 +40,36 @@ router.patch("/", async (req, res) => {
   }
 });
 
-
-router.get("/showRoles", verifyJWT ,async (req, res) => {
+router.get("/showRoles", verifyJWT, async (req, res) => {
   const userId = req.user.id;
   console.log(userId);
 
   try {
-      const client = await pool.connect();
-      const result = await client.query(
-          `SELECT roles 
+    const client = await pool.connect();
+    const result = await client.query(
+      `SELECT roles 
            FROM gameroom
-           WHERE id = '${userId}'`,
-         
-      );
-      if(result.rows[0].roles === "Crewmate"){
-          return res.status(200).json({ message: "You are a Crewmate" });
-      }
-      else{
-        const impost = await client.query(
-          `SELECT number
-           FROM gameroom
-           WHERE roles = 'Imposter'`,
-);
-        res.json({ message: "You are an Imposter", imposters: impost.rows });
-      
-      }
-      
-    } catch (err) {
-      console.error("Error fetching booking:", err);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-  
-  });
+           WHERE id = '${userId}'`
+    );
 
+    if (!result.rows[0]) {
+      return res.status(400).json({ error: "User not found" });
+    }
+    
+    if (result.rows[0].roles === "Crewmate") {
+      return res.status(200).json({ message: "You are a Crewmate" });
+    } else {
+      const impost = await client.query(
+        `SELECT number
+           FROM gameroom
+           WHERE roles = 'Imposter'`
+      );
+      res.json({ message: "You are an Imposter", imposters: impost.rows });
+    }
+  } catch (err) {
+    console.error("Error fetching booking:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 export default router;
